@@ -46,7 +46,7 @@ exports.storeProducts = async (req, res) => {
 
     connection.release();
     console.log('Products inserted successfully');
-    return res.status(200).json({ message: 'Products inserted successfully' });
+    return res.status(200).json({ message: 'Success.' });
   } catch (error) {
     console.error('Error inserting products: ', error);
     return res.status(500).json({ error: 'Internal server error' });
@@ -55,5 +55,24 @@ exports.storeProducts = async (req, res) => {
 
 exports.listProducts = (req, res) => {
   console.log('list');
-  return res.status(501).json({ error: 'Not implemented' });
-};
+  
+  pool.getConnection((err, connection) => {
+    if (err) {
+      console.error('Error getting connection from pool: ', err);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+
+    const selectQuery = 'SELECT * FROM products';
+
+    connection.query(selectQuery, (err, results) => {
+      connection.release();
+
+      if (err) {
+        console.error('Error executing select query: ', err);
+        return res.status(500).json({ error: 'Internal server error' });
+      }
+
+      return res.status(200).json(results);
+    });
+  });
+}
