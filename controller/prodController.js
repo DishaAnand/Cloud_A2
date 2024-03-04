@@ -71,8 +71,13 @@ exports.listProducts = (req, res) => {
         console.error('Error executing select query: ', err);
         return res.status(500).json({ error: 'Internal server error' });
       }
+      const formattedProducts = results.map(product => ({
+        name: product.name,
+        price: product.price,
+        availability: !!product.availability 
+      }));
 
-      return res.status(200).json(results);
+      return res.status(200).json({ products: formattedProducts });
     });
   });
 }
