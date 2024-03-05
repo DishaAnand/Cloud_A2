@@ -1,7 +1,7 @@
 const mysql = require('mysql');
 
 const pool = mysql.createPool({
-  host: 'database-1.cb6ei0gs68ml.us-west-1.rds.amazonaws.com',
+  host: 'database-2.chkg6em0chbg.us-east-1.rds.amazonaws.com',
   user: 'admin',
   password: 'password',
   database: 'initialDatabase',
